@@ -1,0 +1,17 @@
+{
+  "name": "workshop-yandex-js-eugene",
+  "scripts": {
+    "deploy:dev": "sls deploy --stage dev",
+    "deploy:prod": "sls deploy --stage prod"
+  },
+  "version": "1.0.0",
+  "devDependencies": {
+    "serverless": "2.66.2",
+    "serverless-yandex-cloud": "0.1.3"
+  },
+  "dependencies": {
+    "aws-sdk": "2.999",
+    "dotenv": "10.0.0",
+    "serverless-env-generator": "1.4.1"
+  }
+}

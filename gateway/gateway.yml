@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: workshop
+  version: 1.0.0
+paths:
+  /files:
+    post:
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: d4e13dfank6qfqej55m4
+        tag: $latest
+        service_account: aje7rib7ci5dkkqgjd9c
+    get:
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: d4e2fef36eh50erc9tl0
+        tag: $latest
+        service_account: aje7rib7ci5dkkqgjd9c
+  /files/upload:
+    post:
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: d4evpti4kt6i3e8gd1h4
+        tag: $latest
+        service_account: aje7rib7ci5dkkqgjd9c

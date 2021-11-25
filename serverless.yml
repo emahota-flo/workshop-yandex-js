@@ -1,0 +1,76 @@
+service: workshop-yandex-js-eugene
+frameworkVersion: 2.66
+configValidationMode: off
+
+provider:
+  name: yandex-cloud
+  runtime: nodejs12
+
+custom:
+  envFiles:
+    - env.yml
+
+plugins:
+  - serverless-env-generator
+  - serverless-yandex-cloud
+
+package:
+  exclude:
+    - ./**
+  include:
+    - .env
+    - ./api/yandex-database/*.js
+    - ./api/yandex-storage/*.js
+    - ./api/subscribe-to-yandex-storage/*.js
+    - ./services/*.js
+    - ./helper/*.js
+    - ./package.json
+
+
+functions:
+  create-table:
+    handler: api/yandex-database/handler.createTable
+    memory: 128
+    timeout: 5
+    account: ${file(env.yml):${opt:stage}.SERVICE_ACCOUNT_NAME}
+
+  create-item:
+    handler: api/yandex-database/handler.createItem
+    memory: 128
+    timeout: 5
+    account: ${file(env.yml):${opt:stage}.SERVICE_ACCOUNT_NAME}
+
+  get-items:
+    handler: api/yandex-database/handler.getItems
+    memory: 128
+    timeout: 5
+    account: ${file(env.yml):${opt:stage}.SERVICE_ACCOUNT_NAME}
+
+  upload-file:
+    handler: api/yandex-storage/handler.uploadFile
+    memory: 128
+    timeout: 5
+    account: ${file(env.yml):${opt:stage}.SERVICE_ACCOUNT_NAME}
+
+  subscribe-to-storage:
+    handler: api/subscribe-to-yandex-storage/handler.subscribeToStorage
+    memory: 128
+    timeout: 5
+    account: ${file(env.yml):${opt:stage}.SERVICE_ACCOUNT_NAME}
+    events:
+      - s3:
+          account: ${file(env.yml):${opt:stage}.SERVICE_ACCOUNT_NAME}
+          bucket: ${file(env.yml):${opt:stage}.BUCKET_NAME}
+          events:
+            - create.object
+
+resources:
+  workshop-dev: # should be match with name from ENV
+    type: yc::ServiceAccount
+    roles:
+      - editor
+
+  workshop-prod: # should be match with name from ENV
+    type: yc::ServiceAccount
+    roles:
+      - editor
